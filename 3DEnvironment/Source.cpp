@@ -191,13 +191,13 @@ void laodRoom() {
             for (int l = 0; l < matDist.J; l++) {
                 //r.p[k].t[l].bc; //Segundo Baricentro
                 matTime.i[k][l] = int(1000 * matDist.d[k][l]/ V_SON);
-                printf("%d\n", matTime.i[k][l]);
+                //printf("%d\n", matTime.i[k][l]);
             }
         }
 
 
         
-        //matTime.grabarArchivo('T', NumTri);
+        matTime.grabarArchivo('T', NumTri);
 
 
  
