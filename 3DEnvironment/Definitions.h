@@ -17,5 +17,9 @@
 #define NUMRAYS				1000
 #define SECURITYARRAYSPACE	10
 #define NUMRAYDRAW			1002
+
+
+//---------------------------------------------------------------------------
+#define V_SON				340.0 // velocidad del sonido
 //---------------------------------------------------------------------------
 #endif

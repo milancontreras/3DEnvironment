@@ -1,4 +1,5 @@
 ﻿#pragma once
+//#define _CRT_SECURE_NO_WARNINGS
 //---------------------------------------------------------------------------
 #ifndef HeaderH
 #define HeaderH
@@ -1197,6 +1198,7 @@ inline vector1 VectorUnitario(vector1 v1) { //vector unicatio de un vector
         v2 = v1 / m;
     return v2;
 }
+
 //---------------------------------------------------------------------------
 class MatEnergia {
 public:
@@ -1253,8 +1255,11 @@ public:
         //Creación de archivo con la matriz de energía
         FILE* Archivo;
         char buffer[50];
-        sprintf(buffer, "Data/m%c_%i_%i.txt", n, a, b);
-        Archivo = fopen(buffer, "w");
+        //sprintf(buffer, "Data/m%c_%i_%i.txt", n, a, b);
+        sprintf_s(buffer, "Data/m%c_%i_%i.txt", n, a, b);
+        
+        //Archivo = fopen(buffer, "w");
+        fopen_s(&Archivo,buffer, "w");
         for (int j = 0;j < tim;j++) {
             for (int i = 0;i < ele;i++) {
                 if (i == ele - 1)
@@ -1268,6 +1273,7 @@ public:
     };
 
 };
+
 //---------------------------------------------------------------------------
 class matInt {
 public:
@@ -1305,8 +1311,11 @@ public:
         //Creacion de archivo con la matriz de enteros
         FILE* Archivo;
         char buffer[50];
-        sprintf(buffer, "Data/mInt%c_%i.txt", c, a);
-        Archivo = fopen(buffer, "w");
+        //sprintf(buffer, "Data/mInt%c_%i.txt", c, a);
+        sprintf_s(buffer, "Data/mInt%c_%i.txt", c, a);
+
+        //Archivo = fopen(buffer, "w");
+        fopen_s(&Archivo, buffer, "w");
         for (int n = 0;n < J;n++) {
             for (int m = 0;m < I;m++) {
                 if (m == I - 1)
@@ -1320,6 +1329,7 @@ public:
     };
 };
 //---------------------------------------------------------------------------
+
 class matDouble {
 public:
     double** d;      //Matriz dinamica de doubles
@@ -1356,8 +1366,10 @@ public:
         //Creaci�n de archivo con la matriz de doubles
         FILE* Archivo;
         char buffer[50];
-        sprintf(buffer, "Data/mDou%c_%i.txt", c, a);
-        Archivo = fopen(buffer, "w");
+        //sprintf(buffer, "Data/mDou%c_%i.txt", c, a);
+        sprintf_s(buffer, "Data/mDou%c_%i.txt", c, a);
+        //Archivo = fopen(buffer, "w");
+        fopen_s(&Archivo, buffer, "w");
         for (int j = 0;j < J;j++) {
             for (int i = 0;i < I;i++) {
                 if (i == I - 1)
@@ -1370,13 +1382,14 @@ public:
         //Fin de creaci�n de archivo
     };
 };
-/*
+
+
 inline vector1 TriangleNormal(triangle t) {
     vector1 n;
     n = VectorUnitario((t.p1 - t.p0) / (t.p2 - t.p0));
     return n;
 };
-*/
+
 
 inline vector1 NormalPlano(plane p) {
     vector1 n;
