@@ -367,6 +367,161 @@ public:
     */
 
 };
+
+class receptor {
+public:
+    point p;                //Posici�n
+    double ReceptionRadius; //Radio de recepci�n
+    double* eR;             //Energ�a recibida en el receptor
+    int NIt;                //Instantes de tiempo considerados
+    double VisualRadius;    //Radio visual (tama�o en pantalla)
+    color Color;            //Color del receptor
+    point SphereFace[32][4];//Representaci�n gr�fica del receptor
+
+    receptor() {
+        p = 0.0;
+        eR = NULL;
+        NIt = 0;
+
+        Color.R = 0.5;
+        Color.G = 1.0;
+        Color.B = 0.5;
+
+        VisualRadius = 0.3;
+        ReceptionRadius = 0.3;
+
+        //Creating Sphere
+        for (int i = 0;i < 4;i++) {
+            for (int j = 0;j < 8;j++) {
+                SphereFace[8 * i + j][0].x = sin(i * PI / 4) * cos((j + 1) * PI / 4);
+                SphereFace[8 * i + j][0].y = sin(i * PI / 4) * sin((j + 1) * PI / 4);
+                SphereFace[8 * i + j][0].z = cos(i * PI / 4);
+                SphereFace[8 * i + j][1].x = sin(i * PI / 4) * cos(j * PI / 4);
+                SphereFace[8 * i + j][1].y = sin(i * PI / 4) * sin(j * PI / 4);
+                SphereFace[8 * i + j][1].z = cos(i * PI / 4);
+                SphereFace[8 * i + j][2].x = sin((i + 1) * PI / 4) * cos(j * PI / 4);
+                SphereFace[8 * i + j][2].y = sin((i + 1) * PI / 4) * sin(j * PI / 4);
+                SphereFace[8 * i + j][2].z = cos((i + 1) * PI / 4);
+                SphereFace[8 * i + j][3].x = sin((i + 1) * PI / 4) * cos((j + 1) * PI / 4);
+                SphereFace[8 * i + j][3].y = sin((i + 1) * PI / 4) * sin((j + 1) * PI / 4);
+                SphereFace[8 * i + j][3].z = cos((i + 1) * PI / 4);
+            }
+        }
+    };
+
+    ~receptor() {/*
+        deleteTimeSamples();
+    */
+    };
+
+    void Clear() {
+        deleteTimeSamples();
+    };
+
+    void createTimeSamples(int durSim) {
+        deleteTimeSamples();
+        NIt = durSim;
+        eR = new double[NIt];
+        for (int i = 0; i < NIt; i++) {
+            eR[i] = 0.0;
+        }
+    };
+
+    void deleteTimeSamples() {
+        if (NIt > 0) {
+            delete eR;
+            eR = NULL;
+            NIt = 0;
+        }
+    };
+
+    double IntersectionDistance(vector1 n, point p, vector1 u, point o) {
+        /*JFLN:
+            vector n is the normal vector of the plane
+            point p is one of the vertex of the plane
+            vector u is the ray
+            point o is the initial position of the ray
+        */
+        double d, m;
+        m = n * u;
+        //JFLN: Has to have an error tolerance
+        if (m == 0)
+            return -1;
+        d = (n * (p - o)) / m;
+        return d;
+    };
+
+    double Module(vector1 v) { //JFLN: Returns the vector's module
+        double m;
+        m = sqrt(v * v);
+        return m;
+    };
+
+    vector1 Normal(vector1 v1) { //JFLN: Returns the vector's unitary vector
+                                        //compare with the function unitario because this funtion is the same in MathFuntions
+        double m;
+        vector1 v2;
+        m = Module(v1);
+        if (m == 0)
+            v2 = 0;
+        else
+            v2 = v1 / m;
+        return v2;
+
+    };
+
+    double solidAngle(point b) {
+        double area = 0.0, d = 0.0, h = 0.0, r = 0.0, ang = 0.0, d2 = 0.2;
+        d = Module(p - b);
+        h = sqrt(d * d + ReceptionRadius * ReceptionRadius);
+        ang = acos(d / h);
+        h = d2 / cos(ang);
+        r = sqrt(h * h - d2 * d2);
+        area = PI * r * r;
+        return area;
+    };
+
+    void receptionRayTracing(point o, vector1 v, int t, double maxd, double ene) {
+        //o  Punto de partida del rayo
+        //v  Vector director del rayo
+        //p  Punto central del receptor (variable de la clase)
+        point pi;
+        double dis, dci; //Distancia de intersecci�n
+        int tim;    //tiempo de vuelo entre el punto de partida y el receptor
+        int ind;
+        vector1 n, u;
+        u = Normal(v); //u es el unitario de v
+        n = u * (-1);    //vector normal al disco de recepci�n
+        dis = IntersectionDistance(n, p, u, o);
+        if (dis > 0 && dis < maxd) {
+            pi = o + (u * dis);
+            dci = Module(pi - p);
+            dis = Module(u * dis);
+            if (dci < ReceptionRadius) {
+                tim = int(1000 * dis / V_SON);
+                ind = t + tim;
+                if (ind >= 1000) ind = 999;
+                eR[ind] += ene;
+            }
+        }
+    };
+
+    void grabarArchivo() {
+        //Creaci�n de archivo con respuesta del receptor
+        FILE* Archivo;
+        char buffer[50];
+        sprintf_s(buffer, "Data/DatReceptor_%g_%g_%g.txt", p.x, p.y, p.z);
+        //Archivo = fopen(buffer, "w");
+        fopen_s(&Archivo, buffer, "w");
+        for (int i = 0;i < 1000;i++) {
+            fprintf(Archivo, "%15g\n", eR[i]);
+        }
+        fclose(Archivo);
+        //Fin de creaci�n de archivo
+    };
+
+};
+
 //---------------------------------------------------------------------------
 class matPuntos {
 public:
@@ -438,6 +593,24 @@ public:
     void Centroid() {
         bc = (p0 + p1 + p2) / 3;
     };
+
+    double solidAngle(point b) {
+        double area = 0.0, d = 0.2;
+        triangle t;
+        vector1 v0, v1, v2;
+        v0 = p0 - b;
+        v1 = p1 - b;
+        v2 = p2 - b;
+        v0 = v0 / v0.Module();
+        v1 = v1 / v1.Module();
+        v2 = v2 / v2.Module();
+        t.p0 = b + (v0 * d);
+        t.p1 = b + (v1 * d);
+        t.p2 = b + (v2 * d);
+        area = t.TriangleArea();
+        return area;
+    };
+
 
 
     double TriangleArea() {
