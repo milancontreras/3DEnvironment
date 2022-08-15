@@ -7,5 +7,5 @@ D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvir
 D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Source.cpp(331,31): warning C4309: 'argument': truncation of constant value
 D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Source.cpp(332,46): warning C4305: 'argument': truncation from 'int' to 'char'
 D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Source.cpp(332,34): warning C4309: 'argument': truncation of constant value
-D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Source.cpp(380,28): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Source.cpp(385,28): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   3DEnvironment.vcxproj -> D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\x64\Debug\3DEnvironment.exe

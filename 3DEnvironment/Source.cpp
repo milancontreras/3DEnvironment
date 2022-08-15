@@ -348,11 +348,13 @@ void  calcular() {
     double eneRay;  //  Energía del Rayo
     double eneRes; //   Energía Residual
 
-    re.createTimeSamples(durSim); //inicializa re con ceros// re -> Energia recibida en el receptor
+
+    for (int indRecp = 0; indRecp < r.NR; ++indRecp) {
+        r.r[indRecp].createTimeSamples(durSim); //Inicializa el array de energia del receptor
+    }
     s.eF = 100;
 
     s.createRays(numRay); // Crea los rayos
-    //edRayos->Text = s.NRAYS;
 
     eneRay = s.eF / s.NRAYS;
 
@@ -361,11 +363,14 @@ void  calcular() {
 
     mE.init(NumTri, durSim); //Inicializa la matriz con ceros
 
-    //mEN.init(numTri, durSim);
-
     vis_vector = new vector1 * [s.NRAYS];
     vis_modvec = new double* [s.NRAYS];
     vis_timacu = new int* [s.NRAYS];
+
+    double alfa;    //Coeficiente de absorcion
+    double delta;   //Coeficiente de difusion
+    alfa = 0.2;
+    delta = 0.15;
 
     for (int R = 0; R < s.NRAYS; R++) {
 
@@ -400,20 +405,11 @@ void  calcular() {
             indTri = ry[R].idTriangle[i];
             indTime = vis_timacu[R][i];     //instancias de tiempo donde se produjo el choque
 
-
-            double alfa;    //Coeficiente de absorcion
-            double delta;   //Coeficiente de difusion
-            alfa = 0.2;
-            delta = 0.15;
-
             mE.energia[indTri][indTime] += (eneRes * (1 - alfa) * delta); //Cragar la matriz con la energia difusa
 
-            
-            //re.receptionRayTracing(ry[R].r[i - 1], vis_vector[R][i - 1], vis_timacu[R][i], r.maxd, eneRes); //Cargar la energia del receptor
-
             for (int indRecp = 0; indRecp < r.NR; ++indRecp) {
-                r.r[indRecp].createTimeSamples(durSim);
                 r.r[indRecp].receptionRayTracing(ry[R].r[i - 1], vis_vector[R][i - 1], vis_timacu[R][i], r.maxd, eneRes);
+             
             }
 
             //estamos actualizando la energia residual del rayo la energia que le queda.
@@ -423,12 +419,6 @@ void  calcular() {
 
 
           
-    double alfa;    //Coeficiente de absorcion
-    double delta;   //Coeficiente de difusion
-    alfa = 0.2;
-    delta = 0.15;
-
-
 
 
     //Distrubucion de la energia difusa segun la matriz porcentaje
@@ -449,17 +439,10 @@ void  calcular() {
                 }
             }
 
-            //int tVueloRecep = indTime + arrayTimeR[indTriOrig];
-            //if (tVueloRecep < durSim) {         
-            //    re.eR[tVueloRecep] += mE.energia[indTriOrig][indTime] * arrayAngulosR[indTriOrig];
-            //}
-            
         }
     }
-
-    //Guardar 
-    //mE.grabarArchivo('E', NumTri, durSim);
     
+    //Guardar Data del Receptor
     for (int indRecp = 0; indRecp < r.NR; indRecp++) {
         r.r[indRecp].grabarArchivo();
     }
