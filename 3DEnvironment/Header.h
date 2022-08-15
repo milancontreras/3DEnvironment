@@ -372,7 +372,7 @@ class receptor {
 public:
     point p;                //Posici�n
     double ReceptionRadius; //Radio de recepci�n
-    double* eR;             //Energ�a recibida en el receptor
+    double* eR;             //Energia recibida en el receptor
     int NIt;                //Instantes de tiempo considerados
     double VisualRadius;    //Radio visual (tama�o en pantalla)
     color Color;            //Color del receptor
@@ -409,29 +409,29 @@ public:
         }
     };
 
-    ~receptor() {/*
+    ~receptor() {
         deleteTimeSamples();
-    */
     };
 
     void Clear() {
         deleteTimeSamples();
     };
-
-    void createTimeSamples(int durSim) {
-        deleteTimeSamples();
-        NIt = durSim;
-        eR = new double[NIt];
-        for (int i = 0; i < NIt; i++) {
-            eR[i] = 0.0;
-        }
-    };
-
+    
+    
     void deleteTimeSamples() {
         if (NIt > 0) {
             delete eR;
             eR = NULL;
             NIt = 0;
+        }
+    };
+
+    void createTimeSamples(int durSim1) {
+        deleteTimeSamples();
+        NIt = durSim1;
+        eR = new double[NIt];
+        for (int i = 0; i < NIt; i++) {
+            eR[i] = 0.0;
         }
     };
 
@@ -470,7 +470,7 @@ public:
 
     };
 
-    double solidAngle(point b) {
+    double solidAngle(point b) { //Angilo solido con respecto al receptor
         double area = 0.0, d = 0.0, h = 0.0, r = 0.0, ang = 0.0, d2 = 0.2;
         d = Module(p - b);
         h = sqrt(d * d + ReceptionRadius * ReceptionRadius);
@@ -864,14 +864,14 @@ public:
     int			NP;		//Number of Planes
     plane* p;		//Planes
     double		maxd;	//Maxima distancia entre dos puntos en la sala.
-    //receptor* r;     //Number of receptors 
+    receptor*   r;     //Receptors 
     int         NR;     //Number of receptors
 
     room() {
         NP = 0;
         p = NULL;
         NR = 0;
-        //r = NULL;
+        r = NULL;
         maxd = 0.0;
     };
 
@@ -902,9 +902,23 @@ public:
     void Init() {
         NP = 0;
         p = NULL;
-        NR = 0;
-        //r = NULL;
+        NR = 27;
         maxd = 0.0;
+
+        int contador = 0;
+        r = new receptor[NR];
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                for (int k = -1; k <= 1; k++) {
+                    r[contador].p.x = i;
+                    r[contador].p.y = j;
+                    r[contador].p.z = k;
+
+                    contador++;
+                }
+            }
+        }
+
     };
 
     /*
@@ -1188,6 +1202,7 @@ public:
         return ry;
     };
 
+
 };
 
 //---------------------------------------------------------------------------
@@ -1196,10 +1211,10 @@ class source {
 public:
     point p;                //Posici�n
     vector1* Rays;           //Direcciones de partida de los rayos
-    int NRAYS;              //N�mero de rayos
-    double eF;              //Energ�a inicial de la fuente
+    int NRAYS;              //Numero de rayos
+    double eF;              //Energia inicial de la fuente
     triangle IcoFace[20];   //Representaci�n gr�fica de la fuente
-    double VisualRadius;    //Tama�o de la fuente (radio visual)
+    double VisualRadius;    //Tamano de la fuente (radio visual)
     color Color;            //Color de la fuente
 
     source() {   //Inicializo las variables de la clase.
@@ -1412,6 +1427,7 @@ public:
             }
         }
     };
+
     double maxEne() {
         double maxVal;
         maxVal = 0.0;
@@ -1491,7 +1507,7 @@ public:
         fopen_s(&Archivo, buffer, "w");
         for (int n = 0;n < J;n++) {
             for (int m = 0;m < I;m++) {
-                if (m == I - 1)
+                if (m == (I - 1))
                     fprintf(Archivo, "%15d\n", i[m][n]);
                 else
                     fprintf(Archivo, "%15d\t", i[m][n]);

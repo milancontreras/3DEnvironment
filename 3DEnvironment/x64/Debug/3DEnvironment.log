@@ -1,6 +1,11 @@
 ﻿  Source.cpp
 D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Header.h(60,25): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Header.h(510,13): warning C4101: 'P': unreferenced local variable
-D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Header.h(510,16): warning C4101: 'T': unreferenced local variable
-D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Header.h(834,53): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Header.h(665,13): warning C4101: 'P': unreferenced local variable
+D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Header.h(665,16): warning C4101: 'T': unreferenced local variable
+D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Header.h(1003,53): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Source.cpp(331,43): warning C4305: 'argument': truncation from 'int' to 'char'
+D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Source.cpp(331,31): warning C4309: 'argument': truncation of constant value
+D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Source.cpp(332,46): warning C4305: 'argument': truncation from 'int' to 'char'
+D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Source.cpp(332,34): warning C4309: 'argument': truncation of constant value
+D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\3DEnvironment\Source.cpp(380,28): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   3DEnvironment.vcxproj -> D:\Users\mlcon\2022-A\Modelos y Simulacion\proyectos\repos\3DEnvironment\x64\Debug\3DEnvironment.exe
